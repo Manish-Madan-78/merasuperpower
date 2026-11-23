@@ -3,6 +3,7 @@ title: Why I called this Mera Superpower
 date: 2026-11-24
 category: Learning differences
 summary: The child who struggles in class is rarely the child who isn't trying. Why I'm going back to teaching, who I want to help, and three things you can try at home this week.
+image: /uploads/why-mera-superpower.jpg
 featured: true
 draft: false
 ---
