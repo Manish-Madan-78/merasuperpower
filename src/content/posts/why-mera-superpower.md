@@ -4,7 +4,7 @@ date: 2026-11-24
 category: Learning differences
 summary: The child who struggles in class is rarely the child who isn't trying. Why I'm going back to teaching, who I want to help, and three things you can try at home this week.
 featured: true
-draft: true
+draft: false
 ---
 
 Many years ago I taught young children at Bal Bharati Public School in Delhi. Every class seems to have a child or two who don't fit the pattern. The one who can tell you a story full of detail but can't get it down on paper. The one who knows every answer out loud and loses them all on the test. The one who simply can't sit still, and spends more time being told off than being taught.
