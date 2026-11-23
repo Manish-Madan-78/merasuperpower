@@ -1,0 +1,71 @@
+media:
+  input: public/uploads
+  output: /uploads
+
+content:
+  - name: posts
+    label: Blog posts
+    type: collection
+    path: src/content/posts
+    filename: "{primary}.md"
+    view:
+      fields: [title, date, category, draft]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values: [For parents, For teachers, Learning differences, Classroom stories]
+      - { name: summary, label: Short summary (shown on the blog page), type: text }
+      - { name: image, label: Cover image, type: image }
+      - { name: featured, label: Feature at top of blog page, type: boolean, default: false }
+      - { name: draft, label: Draft (hidden from website), type: boolean, default: true }
+      - { name: body, label: Post, type: rich-text }
+
+  - name: testimonials
+    label: Testimonials
+    type: collection
+    path: src/content/testimonials
+    filename: "{primary}.md"
+    view:
+      fields: [name, role, show]
+    fields:
+      - { name: name, label: Name, type: string, required: true }
+      - { name: role, label: "Who they are (e.g. Parent · Gurugram)", type: string, required: true }
+      - { name: quote, label: Quote, type: text, required: true }
+      - { name: order, label: Order (1 shows first), type: number, default: 1 }
+      - { name: show, label: Show on website, type: boolean, default: true }
+
+  - name: site
+    label: Site settings
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - { name: name, label: Site name, type: string }
+      - { name: author, label: Your name, type: string }
+      - { name: email, label: Contact email, type: string }
+      - { name: location, label: Location, type: string }
+      - { name: headline, label: Home page headline, type: string }
+      - { name: hindi_line, label: Hindi line under headline, type: string }
+      - { name: intro, label: Home page intro, type: text }
+      - { name: photo, label: Your portrait, type: image }
+      - { name: mba_institute, label: MBA institute, type: string }
+      - { name: about, label: About paragraphs, type: text, list: true }
+      - name: services
+        label: How I help
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: text, label: Description, type: text }
+      - { name: newsletter_form_action, label: Newsletter form URL (leave empty to hide sign-up), type: string }
+      - { name: instagram, label: Instagram URL, type: string }
+      - { name: linkedin, label: LinkedIn URL, type: string }

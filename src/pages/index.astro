@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Newsletter from '../components/Newsletter.astro';
+import PostCard from '../components/PostCard.astro';
+import site from '../data/site.json';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const testimonials = (await getCollection('testimonials', ({ data }) => data.show))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const icons = [
+  '<circle cx="12" cy="6" r="3"></circle><path d="M6 21v-5a6 6 0 0 1 12 0v5"></path>',
+  '<path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"></path>',
+  '<path d="M3 7l9-4 9 4-9 4z"></path><path d="M7 9v5c0 1.5 2.2 3 5 3s5-1.5 5-3V9"></path>',
+];
+---
+<Base current="home" image={site.photo || undefined}>
+  <section class="wrap hero">
+    <div class="hero-copy">
+      <p class="eyebrow" style="margin:0">Educator · {site.location}</p>
+      <h1>{site.headline}</h1>
+      {site.hindi_line && <p class="hindi" lang="hi">{site.hindi_line}</p>}
+      <p class="lede">{site.intro}</p>
+      <div class="actions">
+        <a href="/blog/" class="btn btn-accent">Read the blog</a>
+        <a href="#contact" class="btn btn-outline">Work with me</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <div class="portrait-frame">
+        {site.photo
+          ? <img src={site.photo} alt={`Portrait of ${site.author}`}>
+          : <svg width="45%" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#E8D2B4"></circle><path d="M50 22l7.6 16.3 17.9 2.1-13.2 12.2 3.5 17.6L50 61.4l-15.8 8.8 3.5-17.6-13.2-12.2 17.9-2.1z" fill="#A9520E"></path></svg>}
+      </div>
+      <div class="portrait-card">
+        <p class="tag">Where it began</p>
+        <p>Teaching elementary classes at Bal Bharati Public School, Delhi</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey" aria-label="My journey">
+    <div class="wrap">
+      <div class="step"><span class="num">01 · The classroom</span><strong>Primary teacher</strong><span class="where">Bal Bharati Public School, Delhi</span></div>
+      <div class="step"><span class="num">02 · The pivot</span><strong>MBA</strong>{site.mba_institute && <span class="where">{site.mba_institute}</span>}</div>
+      <div class="step"><span class="num">03 · The boardroom</span><strong>Sales &amp; marketing</strong><span class="where">Cafe Coffee Day · Times Internet</span></div>
+      <div class="step"><span class="num">04 · Back to teaching</span><strong>Neurodiverse learners</strong><span class="where">{site.location}</span></div>
+    </div>
+  </section>
+
+  <section class="wrap about" id="about">
+    <div>
+      <p class="eyebrow">About</p>
+      <h2 class="h2">From the classroom to the boardroom, and back again.</h2>
+    </div>
+    <div class="about-text">
+      {site.about.map((p) => <p>{p}</p>)}
+      <a href="#contact" class="back">Get in touch →</a>
+    </div>
+  </section>
+
+  <section class="wrap services" id="help">
+    <p class="eyebrow">How I help</p>
+    <h2 class="h2">Three ways we can work together</h2>
+    <div class="cards">
+      {site.services.map((s, i) => (
+        <div class="card">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#23615C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[i % icons.length]}></svg>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="band-white" aria-labelledby="blog-h">
+    <div class="wrap" style="padding-block:104px">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">From the blog</p>
+          <h2 class="h2" id="blog-h">Notes from the classroom</h2>
+        </div>
+        {posts.length > 0 && <a href="/blog/" class="back">See all posts →</a>}
+      </div>
+      {posts.length > 0
+        ? <div class="post-grid">{posts.map((p, i) => <PostCard post={p} index={i} />)}</div>
+        : <p class="empty">The first posts are on their way.</p>}
+    </div>
+  </section>
+
+  {testimonials.length > 0 && (
+    <section class="testimonials" id="testimonials">
+      <div class="wrap">
+        <p class="eyebrow">Kind words</p>
+        <h2 class="h2">What parents and colleagues say</h2>
+        <div class="quotes">
+          {testimonials.map((t) => (
+            <figure class="quote">
+              <svg width="34" height="26" viewBox="0 0 34 26" aria-hidden="true"><path d="M0 26V15C0 6 5 1 13 0l1 4c-4 1-7 4-7 9h6v13zm20 0V15c0-9 5-14 13-15l1 4c-4 1-7 4-7 9h6v13z" fill="#F2C894"></path></svg>
+              <blockquote>{t.data.quote}</blockquote>
+              <figcaption><strong>{t.data.name}</strong><br><span>{t.data.role}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Newsletter />
+</Base>

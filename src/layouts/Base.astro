@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+import { getCollection } from 'astro:content';
+
+const hasTestimonials = (await getCollection('testimonials', ({ data }) => data.show)).length > 0;
+
+interface Props { title?: string; description?: string; current?: 'home' | 'blog'; image?: string; }
+const { title, description = site.intro, current = 'home', image } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.author}, educator in ${site.location}`;
+const base = current === 'home' ? '' : '/';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  {ogImage && <meta property="og:image" content={ogImage}>}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Tiro+Devanagari+Hindi&display=swap"></head>
+<body>
+  <a href="#main" class="btn btn-dark skip">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a href="/" class="logo" aria-label={`${site.name} home`}>
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#A9520E"></circle><path d="M17 8l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z" fill="#FBF7F0"></path></svg>
+        <span>{site.name}</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href={`${base}#about`}>About</a>
+        <a href={`${base}#help`}>How I help</a>
+        <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
+        {hasTestimonials && <a href={`${base}#testimonials`}>Testimonials</a>}
+        <a href={`${base}#contact`} class="btn btn-dark">Get in touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <span class="footer-title">Let's talk.</span>
+          <p>Whether you're a parent, a teacher or a school, I'd love to hear from you.</p>
+          <a class="footer-email" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+        <nav class="footer-col" aria-label="Footer">
+          <strong>Explore</strong>
+          <a href="/#about">About</a>
+          <a href="/#help">How I help</a>
+          <a href="/blog/">Blog</a>
+          {hasTestimonials && <a href="/#testimonials">Testimonials</a>}
+        </nav>
+        {(site.instagram || site.linkedin) && (
+          <div class="footer-col">
+            <strong>Follow</strong>
+            <div class="socials">
+              {site.instagram && <a href={site.instagram} aria-label="Instagram" rel="me noopener" target="_blank"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"></circle></svg></a>}
+              {site.linkedin && <a href={site.linkedin} aria-label="LinkedIn" rel="me noopener" target="_blank"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"></path></svg></a>}
+            </div>
+          </div>
+        )}
+      </div>
+      <div class="footer-base">
+        <span>© {new Date().getFullYear()} {site.name} · {site.location}</span>
+        <span>merasuperpower.com</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Mera Superpower",
+  "author": "Richa Sharma",
+  "email": "richa@merasuperpower.com",
+  "location": "Delhi NCR",
+  "headline": "Every child has a superpower. Some just learn differently.",
+  "hindi_line": "हर बच्चे में एक सुपरपावर है।",
+  "intro": "I'm Richa, a teacher who returned to the classroom. I write about learning, help children who think differently find their footing, and help their parents along the way.",
+  "photo": "",
+  "mba_institute": "",
+  "about": [
+    "I started my career teaching young children at Bal Bharati Public School in Delhi. Those years taught me something I never forgot: the child who struggles in class is rarely the child who isn't trying.",
+    "An MBA took me into the corporate world, leading sales and marketing at Cafe Coffee Day and Times Internet. I learned how to listen to people, explain things clearly and build something from scratch.",
+    "Now I'm bringing both together. I work with children who learn differently, including those with ADHD, dyslexia and other learning differences, and with the parents and teachers around them."
+  ],
+  "services": [
+    { "title": "For children", "text": "Patient, one-on-one learning support that builds on what a child is good at, not just what they find hard." },
+    { "title": "For parents", "text": "Practical guidance on understanding a diagnosis, working with schools and supporting learning at home." },
+    { "title": "For schools", "text": "Workshops that help teachers spot learning differences early and adapt their classrooms." }
+  ],
+  "newsletter_form_action": "",
+  "instagram": "",
+  "linkedin": ""
+}

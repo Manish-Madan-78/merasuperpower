@@ -1,0 +1,27 @@
+---
+import site from '../data/site.json';
+interface Props { variant?: 'sand' | 'teal'; title?: string; text?: string; }
+const {
+  variant = 'sand',
+  title = 'Letters from the classroom',
+  text = 'One email a month with new posts, practical ideas for parents and stories from the work. No spam.',
+} = Astro.props;
+const id = `email-${variant}`;
+---
+{site.newsletter_form_action && (
+  <section class="wrap newsletter" aria-labelledby={`${id}-h`}>
+    <div class:list={['newsletter-box', variant === 'teal' && 'teal']}>
+      <div>
+        <h2 id={`${id}-h`}>{title}</h2>
+        <p>{text}</p>
+      </div>
+      <form class="signup" action={site.newsletter_form_action} method="post" target="_blank">
+        <div class="field">
+          <label for={id}>Email address</label>
+          <input id={id} name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+        </div>
+        <button type="submit" class="btn btn-accent">Subscribe</button>
+      </form>
+    </div>
+  </section>
+)}

@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const all = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = all.find((p) => p.data.featured) ?? null;
+const rest = featured ? all.filter((p) => p !== featured) : all;
+const cats = ['All', ...new Set(all.map((p) => p.data.category))];
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title="Blog" current="blog" description="Honest writing on how children learn, what learning differences really look like, and how parents and teachers can help.">
+  <section class="wrap page-head">
+    <p class="eyebrow" style="margin:0">The blog</p>
+    <h1>Notes from the classroom</h1>
+    <p class="lede">Honest writing on how children learn, what learning differences really look like, and how parents and teachers can help.</p>
+    {cats.length > 2 && (
+      <div class="filters" role="group" aria-label="Filter by topic">
+        {cats.map((c, i) => <button type="button" data-filter={c} aria-pressed={i === 0 ? 'true' : 'false'}>{c}</button>)}
+      </div>
+    )}
+  </section>
+
+  <section class="wrap" style="padding-bottom:96px">
+    {all.length === 0 && <p class="empty">The first posts are on their way.</p>}
+
+    {featured && (
+      <a class="featured" href={`/blog/${featured.id}/`} data-cat={featured.data.category}>
+        <div class:list={['thumb', !featured.data.image && 'tint-0']}>
+          {featured.data.image && <img src={featured.data.image} alt="">}
+        </div>
+        <div class="body">
+          <span class="cat">Featured · {featured.data.category}</span>
+          <h2>{featured.data.title}</h2>
+          {featured.data.summary && <p>{featured.data.summary}</p>}
+          <span class="meta">{fmt(featured.data.date)}</span>
+        </div>
+      </a>
+    )}
+
+    {rest.length > 0 && <div class="post-grid">{rest.map((p, i) => <PostCard post={p} index={i + 1} />)}</div>}
+  </section>
+
+  <Newsletter variant="teal" title="Get new posts by email" text="One email a month. Unsubscribe any time." />
+
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const items = document.querySelectorAll<HTMLElement>('[data-cat]');
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      const f = b.dataset.filter;
+      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      items.forEach((el) => { el.hidden = f !== 'All' && el.dataset.cat !== f; });
+    }));
+  </script>
+</Base>

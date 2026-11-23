@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import site from '../../data/site.json';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, date, category, image, summary } = post.data;
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const mins = Math.max(1, Math.round(words / 220));
+---
+<Base title={title} current="blog" description={summary} image={image}>
+  <article class="post">
+    <header>
+      <a href="/blog/" class="back">← All posts</a>
+      <span class="cat">{category}</span>
+      <h1>{title}</h1>
+      <span class="meta">{site.author} · {date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })} · {mins} min read</span>
+    </header>
+    {image && <div class="hero-img"><img src={image} alt=""></div>}
+    <div class="prose"><Content /></div>
+  </article>
+  <Newsletter />
+</Base>
