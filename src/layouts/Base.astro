@@ -21,6 +21,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/rss+xml" title={`${site.name} blog`} href={new URL('/rss.xml', Astro.site)}>
   <meta property="og:title" content={fullTitle}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
@@ -51,7 +52,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <slot />
   </main>
 
-  <footer class="site-footer" id="contact">
+  <footer class="site-footer" id={site.contact_form_key ? 'footer' : 'contact'}>
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-col">

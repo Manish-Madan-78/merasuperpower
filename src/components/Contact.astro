@@ -1,0 +1,74 @@
+---
+import site from '../data/site.json';
+// Web3Forms emails each submission to the address the access key was created for.
+// The key is meant to be public; it only allows sending to that one inbox.
+---
+{site.contact_form_key && (
+  <section class="wrap contact" id="contact" aria-labelledby="contact-h">
+    <div class="contact-box">
+      <div class="contact-intro">
+        <p class="eyebrow">Get in touch</p>
+        <h2 class="h2" id="contact-h">Tell me about your child, your class or your school.</h2>
+        <p>I read every message myself and usually reply within two working days. You can also write to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      </div>
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" data-contact>
+        <input type="hidden" name="access_key" value={site.contact_form_key}>
+        <input type="hidden" name="subject" value="New message from merasuperpower.com">
+        <input type="hidden" name="from_name" value="Mera Superpower website">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field">
+          <label for="c-name">Your name</label>
+          <input id="c-name" name="name" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input id="c-email" name="email" type="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="c-phone">Phone <span class="opt">(optional)</span></label>
+          <input id="c-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="c-role">I'm a</label>
+          <select id="c-role" name="role">
+            <option>Parent</option>
+            <option>Teacher</option>
+            <option>School</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field wide">
+          <label for="c-msg">Message</label>
+          <textarea id="c-msg" name="message" rows="5" required></textarea>
+        </div>
+        <div class="wide actions-row">
+          <button type="submit" class="btn btn-accent">Send message</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+)}
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-contact]').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector<HTMLElement>('.form-status')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      button.disabled = true;
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false) throw new Error(data.message);
+        form.reset();
+        status.textContent = 'Thank you! Your message is on its way. I’ll get back to you soon.';
+      } catch {
+        status.textContent = 'Sorry, that didn’t go through. Please email me directly instead.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

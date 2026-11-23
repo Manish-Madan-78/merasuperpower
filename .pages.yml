@@ -72,3 +72,6 @@ content:
       - { name: facebook, label: Facebook URL, type: string }
       - { name: youtube, label: YouTube URL, type: string }
       - { name: x, label: X (Twitter) URL, type: string }
+      - { name: youtube_channel_id, label: YouTube channel ID (starts with UC; shows latest videos on the home page), type: string }
+      - { name: instagram_feed_url, label: Instagram feed URL from Behold.so (shows latest posts on the home page), type: string }
+      - { name: contact_form_key, label: Web3Forms access key (shows the contact form; leave empty to hide), type: string }

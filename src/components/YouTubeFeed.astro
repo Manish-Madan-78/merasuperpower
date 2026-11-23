@@ -1,0 +1,32 @@
+---
+import site from '../data/site.json';
+import { getYouTubeVideos } from '../lib/feeds';
+
+const videos = await getYouTubeVideos(site.youtube_channel_id);
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+---
+{videos.length > 0 && (
+  <section class="band-white" aria-labelledby="yt-h">
+    <div class="wrap" style="padding-block:104px">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">On YouTube</p>
+          <h2 class="h2" id="yt-h">Latest videos</h2>
+        </div>
+        {site.youtube && <a href={site.youtube} class="back" rel="me noopener" target="_blank">See the channel →</a>}
+      </div>
+      <div class="post-grid">
+        {videos.map((v) => (
+          <a class="post-card" href={v.url} rel="noopener" target="_blank">
+            <div class="thumb video-thumb">
+              <img src={v.thumb} alt="" loading="lazy" decoding="async">
+              <span class="play" aria-hidden="true">▶</span>
+            </div>
+            <h3>{v.title}</h3>
+            <span class="meta">{fmt(v.date)}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

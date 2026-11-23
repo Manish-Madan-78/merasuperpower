@@ -1,0 +1,26 @@
+---
+import site from '../data/site.json';
+import { getInstagramPosts } from '../lib/feeds';
+
+const posts = await getInstagramPosts(site.instagram_feed_url);
+const handle = site.instagram?.match(/instagram\.com\/([^/?#]+)/)?.[1];
+---
+{posts.length > 0 && (
+  <section class="wrap feed" aria-labelledby="insta-h">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">On Instagram</p>
+        <h2 class="h2" id="insta-h">Little moments from the work</h2>
+      </div>
+      {site.instagram && <a href={site.instagram} class="back" rel="me noopener" target="_blank">Follow{handle ? ` @${handle}` : ''} →</a>}
+    </div>
+    <div class="insta-grid">
+      {posts.map((p) => (
+        <a href={p.url} class="insta-item" rel="noopener" target="_blank">
+          <img src={p.image} alt={p.alt} loading="lazy" decoding="async">
+          {p.isVideo && <span class="badge" aria-hidden="true">▶</span>}
+        </a>
+      ))}
+    </div>
+  </section>
+)}
