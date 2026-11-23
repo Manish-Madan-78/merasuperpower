@@ -7,6 +7,8 @@ const {
   text = 'One email a month with new posts, practical ideas for parents and stories from the work. No spam.',
 } = Astro.props;
 const id = `email-${variant}`;
+// Kit expects `email_address`; Buttondown and most others expect `email`.
+const field = /kit\.com|convertkit\.com/.test(site.newsletter_form_action) ? 'email_address' : 'email';
 ---
 {site.newsletter_form_action && (
   <section class="wrap newsletter" aria-labelledby={`${id}-h`}>
@@ -18,7 +20,7 @@ const id = `email-${variant}`;
       <form class="signup" action={site.newsletter_form_action} method="post" target="_blank">
         <div class="field">
           <label for={id}>Email address</label>
-          <input id={id} name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+          <input id={id} name={field} type="email" required autocomplete="email" placeholder="you@example.com">
         </div>
         <button type="submit" class="btn btn-accent">Subscribe</button>
       </form>
