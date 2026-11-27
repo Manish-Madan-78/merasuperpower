@@ -31,6 +31,13 @@ const icons = [
         <a href="/blog/" class="btn btn-accent">Read the blog</a>
         <a href="#contact" class="btn btn-outline">Work with me</a>
       </div>
+      {posts[0] && (
+        <a href={`/blog/${posts[0].id}/`} class="latest-post">
+          <span class="latest-tag">New on the blog</span>
+          <span class="latest-title">{posts[0].data.title}</span>
+          <span class="latest-arrow" aria-hidden="true">→</span>
+        </a>
+      )}
     </div>
     <div class="portrait">
       <div class="portrait-frame">
@@ -51,6 +58,21 @@ const icons = [
       <div class="step"><span class="num">02 · The pivot</span><strong>MBA</strong>{site.mba_institute && <span class="where">{site.mba_institute}</span>}</div>
       <div class="step"><span class="num">03 · The boardroom</span><strong>Sales &amp; marketing</strong><span class="where">Cafe Coffee Day · Times Internet</span></div>
       <div class="step"><span class="num">04 · Back to teaching</span><strong>Neurodiverse learners</strong><span class="where">{site.location}</span></div>
+    </div>
+  </section>
+
+  <section class="band-white" aria-labelledby="blog-h">
+    <div class="wrap" style="padding-block:104px">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The blog</p>
+          <h2 class="h2" id="blog-h">Latest from the blog</h2>
+        </div>
+        {posts.length > 0 && <a href="/blog/" class="btn btn-outline">See all posts →</a>}
+      </div>
+      {posts.length > 0
+        ? <div class="post-grid">{posts.map((p, i) => <PostCard post={p} index={i} />)}</div>
+        : <p class="empty">The first posts are on their way.</p>}
     </div>
   </section>
 
@@ -79,20 +101,6 @@ const icons = [
     </div>
   </section>
 
-  <section class="band-white" aria-labelledby="blog-h">
-    <div class="wrap" style="padding-block:104px">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">From the blog</p>
-          <h2 class="h2" id="blog-h">Notes from the classroom</h2>
-        </div>
-        {posts.length > 0 && <a href="/blog/" class="back">See all posts →</a>}
-      </div>
-      {posts.length > 0
-        ? <div class="post-grid">{posts.map((p, i) => <PostCard post={p} index={i} />)}</div>
-        : <p class="empty">The first posts are on their way.</p>}
-    </div>
-  </section>
 
   <YouTubeFeed />
 

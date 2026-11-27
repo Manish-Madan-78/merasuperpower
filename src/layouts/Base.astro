@@ -40,9 +40,9 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
         <span>{site.name}</span>
       </a>
       <nav class="nav" aria-label="Main">
+        <a href="/blog/" class="nav-blog" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
         <a href={`${base}#about`}>About</a>
         <a href={`${base}#help`}>How I help</a>
-        <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
         {hasTestimonials && <a href={`${base}#testimonials`}>Testimonials</a>}
         <a href={`${base}#contact`} class="btn btn-dark">Get in touch</a>
       </nav>
@@ -63,9 +63,9 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
         </div>
         <nav class="footer-col" aria-label="Footer">
           <strong>Explore</strong>
+          <a href="/blog/">Blog</a>
           <a href="/#about">About</a>
           <a href="/#help">How I help</a>
-          <a href="/blog/">Blog</a>
           {hasTestimonials && <a href="/#testimonials">Testimonials</a>}
         </nav>
         {(site.instagram || site.linkedin || site.facebook || site.youtube || site.x) && (
